@@ -17,6 +17,11 @@ export default function HomeScreen() {
           <Text>Gesture</Text>
         </Pressable>
       </Link>
+      <Link href="/data-dog" asChild style={{padding:10, backgroundColor:'lightgray', width:125}}>
+        <Pressable>
+          <Text>data-dog</Text>
+        </Pressable>
+      </Link>
       <StatusBar style="auto" />
     </View>
   );
