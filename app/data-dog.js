@@ -9,7 +9,7 @@ export default function DataDog() {
     const [page, setPage] = useState(1);
     const [showFloating, setShowFloating] = useState(false);
     const list = useRef();
-    const selectedDogs = useState([]);
+    const [selectedDogs, setSelectedDogs] = useState([]);
 
     useEffect(() => {
         // Fonction asynchrone pour obtenir les données
@@ -33,10 +33,15 @@ export default function DataDog() {
     // Vu que nous voulons récupérer plusieurs infos dans un tableau, 
     // il convient de préciser quelles informations nous souhaitons voir apparaître
     const renderItem = ({ item }) => (
-        <View style={styles.dogItem}>
-            <Text style={styles.dogText}>ID: {item.id}, Name: {item.name}, Breed: {item.breed}</Text>
-            <Text style={styles.dogBirth}>Birthdate: {item.birthdate}</Text>
-        </View>
+        <Pressable
+            onLongPress={() => select(item)}
+            onPress={() => selectedDogs.length > 0 && select(item)}>
+            {/*cette modification permet d'affecter des couleurs selon la selection des chiens avec onLongPress */}
+            <View style={{...styles.dogItem, backgroundColor: selectedDogs.includes(item)? "#ccc":"#fff"}}>
+                <Text style={styles.dogText}>ID: {item.id}, Name: {item.name}, Breed: {item.breed}</Text>
+                <Text style={styles.dogBirth}>Birthdate: {item.birthdate}</Text>
+            </View>
+        </Pressable >
     );
 
     function refreshHandle() {
@@ -44,6 +49,18 @@ export default function DataDog() {
         setDogPosition([]);
         fetchData();
     }
+
+    function select(dog) {//permet de selectionner les chiens
+        if (selectedDogs.includes(dog)) {
+            setSelectedDogs(selectedDogs.filter(item => dog != item))
+        } else {
+            setSelectedDogs([
+                ...selectedDogs,
+                dog
+            ]);
+        }
+    }
+
     return (
         <View style={styles.container}>
             <Link href="/" style={styles.link}>Home</Link>
