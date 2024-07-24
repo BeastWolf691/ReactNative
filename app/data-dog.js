@@ -60,6 +60,7 @@ export default function DataDog() {
                     onRefresh={refreshHandle}
                     //permet d'avoir l'effet où lorsqu'on scroll, la fleche pr remonter n'arrive qu'après avoir dépassé une limite
                     onScrollEndDrag={(event) => event.nativeEvent.contentOffset.y > 50 && setShowFloating(true)}
+                    onStartReached={() => setShowFloating(false)}
                     onEndReached={() => setPage(page + 1)}
                     onEndReachedThreshold={3}
                     keyExtractor={item => item.id.toString()}
