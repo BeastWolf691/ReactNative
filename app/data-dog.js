@@ -7,12 +7,13 @@ export default function DataDog() {
     const [dogPosition, setDogPosition] = useState([]);
 
     useEffect(() => {
+
 // Fonction asynchrone pour obtenir les données
         const fetchData = async () => {
             try {
-                const response = await axios.get("https://3906-90-85-193-25.ngrok-free.app/api/dog", {
+                const response = await axios.get("https://bunny-relaxing-quickly.ngrok-free.app/api/dog", {
                     headers: {
-                        'ngrok-skip-browser-warning': 'true'
+                        'ngrok-skip-browser-warning': 'true'//necessaire seulement car hébergeur du serveur
                     }
                 });
                 setDogPosition(response.data);
@@ -39,7 +40,7 @@ export default function DataDog() {
             {dogPosition.length > 0 ? (
                 <FlatList
                     data={dogPosition}
-                    keyExtractor={(item, index) => index.toString()}
+                    keyExtractor={item => item.id}
                     renderItem={renderItem}
                 />
             ) : (
@@ -69,5 +70,9 @@ const styles = StyleSheet.create({
         margin: 10,
         fontSize: 16,
         color: 'grey',
+    },
+    dogItem: {
+        paddingStart: 20,
+        backgroundColor: '#9FE6F7'
     }
 });
