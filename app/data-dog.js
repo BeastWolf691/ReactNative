@@ -1,51 +1,68 @@
 import { Link } from "expo-router";
 import { useState, useEffect } from "react";
-import { View, Text, StyleSheet, FlatList } from "react-native";
+import { View, Text, StyleSheet, FlatList, Pressable, Button } from "react-native";
 import axios from "axios";
 
 export default function DataDog() {
     const [dogPosition, setDogPosition] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [page, setPage] = useState(1);
 
     useEffect(() => {
-
-// Fonction asynchrone pour obtenir les données
+        // Fonction asynchrone pour obtenir les données
         const fetchData = async () => {
             try {
                 const response = await axios.get("https://bunny-relaxing-quickly.ngrok-free.app/api/dog", {
                     headers: {
-                        'ngrok-skip-browser-warning': 'true'//necessaire seulement car hébergeur du serveur
-                    }
+                        'ngrok-skip-browser-warning': 'true' // nécessaire seulement car hébergeur du serveur
+                    },
+                    params: {page}
                 });
-                setDogPosition(response.data);
+                setDogPosition([...dogPosition,...response.data]);//permet de rajouter a la suite les autres chiens en appuyant sur le bouton
+                setIsLoading(false);
             } catch (error) {
                 console.error("Erreur lors de la récupération des données : ", error);
             }
         };
         fetchData();
-    }, []);
+    }, [page]);//permet d'incrémenter chaque page et renouvelle l'affichage
 
-
-//vu que nous voulons récupérer plusieurs infos dans un tableau, 
-//il convient de préciser quelles informations nous souhaitons voir apparaître
+    // Vu que nous voulons récupérer plusieurs infos dans un tableau, 
+    // il convient de préciser quelles informations nous souhaitons voir apparaître
     const renderItem = ({ item }) => (
         <View style={styles.dogItem}>
             <Text style={styles.dogText}>ID: {item.id}, Name: {item.name}, Breed: {item.breed}</Text>
-            <Text style={styles.dogText}>Birthdate: {item.birthdate}</Text>
+            <Text style={styles.dogBirth}>Birthdate: {item.birthdate}</Text>
         </View>
     );
 
+    function refreshHandle(){
+        setPage(1);
+        setDogPosition([]);
+        fetchData();
+    }
     return (
         <View style={styles.container}>
             <Link href="/" style={styles.link}>Home</Link>
+            {/* <Button title='suivant'style={styles.button} onPress={() => setPage(page + 1)}/> permet lors de l'appuie que les chiens s'ajoutent */}
+            <Pressable>
+                <Text>↑</Text>
+            </Pressable>
+            
             {dogPosition.length > 0 ? (
                 <FlatList
                     data={dogPosition}
-                    keyExtractor={item => item.id}
+                    refreshing={isLoading}
+                    onRefresh={refreshHandle}
+                    onEndReached={() => setPage(page+1)}
+                    onEndReachedThreshold={3}
+                    keyExtractor={item => item.id.toString()}
                     renderItem={renderItem}
                 />
             ) : (
                 <Text style={styles.loadingText}>Chargement des données...</Text>
             )}
+           
         </View>
     );
 }
@@ -65,6 +82,7 @@ const styles = StyleSheet.create({
     dogText: {
         marginVertical: 10,
         fontSize: 16,
+        backgroundColor: '#FFC300'
     },
     loadingText: {
         margin: 10,
@@ -72,7 +90,19 @@ const styles = StyleSheet.create({
         color: 'grey',
     },
     dogItem: {
-        paddingStart: 20,
+        paddingStart: 20
+    },
+    dogBirth: {
         backgroundColor: '#9FE6F7'
-    }
+    },
+    button: {
+        backgroundColor: '#D0BA74',
+        padding: 10,
+        marginVertical: 10,
+        alignItems: 'center',
+    },
+    buttonText: {
+        fontSize: 16,
+        color: 'white',
+    },
 });
