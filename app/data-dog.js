@@ -7,6 +7,7 @@ export default function DataDog() {
     const [dogPosition, setDogPosition] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [page, setPage] = useState(1);
+    const [showFloating, setShowFloating] = useState(false);
     const list = useRef();
 
     useEffect(() => {
@@ -46,16 +47,19 @@ export default function DataDog() {
         <View style={styles.container}>
             <Link href="/" style={styles.link}>Home</Link>
             {/* <Button title='suivant'style={styles.button} onPress={() => setPage(page + 1)}/> permet lors de l'appuie que les chiens s'ajoutent */}
-            <Pressable onPress={() => list.current.scrollToIndex({index:0})} style={styles.floatingButton}>{/*besoin de renseigner l'objet avec un argument index*/}
-                <Text>↑</Text>
-            </Pressable>
-
+            {showFloating &&
+                <Pressable onPress={() => list.current.scrollToIndex({ index: 0 })} style={styles.floatingButton}>{/*besoin de renseigner l'objet avec un argument index*/}
+                    <Text>↑</Text>
+                </Pressable>
+            }
             {dogPosition.length > 0 ? (
                 <FlatList
                     ref={list}
                     data={dogPosition}
                     refreshing={isLoading}
                     onRefresh={refreshHandle}
+                    //permet d'avoir l'effet où lorsqu'on scroll, la fleche pr remonter n'arrive qu'après avoir dépassé une limite
+                    onScrollEndDrag={(event) => event.nativeEvent.contentOffset.y > 50 && setShowFloating(true)}
                     onEndReached={() => setPage(page + 1)}
                     onEndReachedThreshold={3}
                     keyExtractor={item => item.id.toString()}
