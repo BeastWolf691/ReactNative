@@ -6,7 +6,7 @@ import { Link } from 'expo-router';
 export default function HomeScreen() {
   return (
     <View>
-      <Text>Bienvenu sur notre site</Text>
+      <Text style={styles.txt}>Bienvenu sur notre site</Text>
       <Link href="/todo" asChild style={{padding:10, backgroundColor:'lightgray', width:125}}>
         <Pressable>
           <Text>Todo</Text>
@@ -27,3 +27,8 @@ export default function HomeScreen() {
   );
 }
 
+const styles = StyleSheet.create({
+  txt: {
+    marginTop: 50
+  }
+})

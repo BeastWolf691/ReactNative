@@ -9,6 +9,7 @@ export default function DataDog() {
     const [page, setPage] = useState(1);
     const [showFloating, setShowFloating] = useState(false);
     const list = useRef();
+    const selectedDogs = useState([]);
 
     useEffect(() => {
         // Fonction asynchrone pour obtenir les données
