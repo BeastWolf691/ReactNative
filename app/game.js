@@ -12,7 +12,7 @@ export default function game({ }) {
         top: top.value + '%',//fait qu'il part du haut
 
         left: left.value + '%',//fait qu'il sera deplacé sur les cotés
-        
+
         transform: [{ rotate: rotation.value + 'deg' }]//fait pour la rotation
     }));
 
@@ -54,30 +54,11 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#0C0C0C'
     },
-    square: {
-        width: 100,
-        height: 100,
-        backgroundColor: 'red'
-    },
     link: {
         padding: 25,
         marginTop: 50,
         backgroundColor: 'lightgrey',
         width: 125
-    },
-    box: {
-        height: 80,
-        width: 80,
-        margin: 20,
-        borderWidth: 1,
-        borderColor: '#b58df1',
-        borderRadius: 20,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    text: {
-        color: '#b58df1',
-        textTransform: 'uppercase',
-        fontWeight: 'bold',
-    },
+    }
+
 });
