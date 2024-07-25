@@ -63,19 +63,11 @@ export default function DataDog() {
     }
 
     async function deleteSelected() {//ce code permet lors d'une selection de pouvoir ensuite supprimer
-        try {
-            for (const dog of selectedDogs) {
-                await axios.delete(`https://bunny-relaxing-quickly.ngrok-free.app/api/dog/${dog.id}`, {
-                    headers: {
-                        'ngrok-skip-browser-warning': 'true'
-                    }
-                });
-            }
-            setDogPosition(dogPosition.filter(dog => !selectedDogs.includes(dog)));
-            setSelectedDogs([]);
-        } catch (error) {
-            console.error("Erreur lors de la suppression des données : ", error);
+        for(const dog of selectedDogs) {
+            await axios.delete('https://bunny-relaxing-quickly.ngrok-free.app/api/dog/'+dog.id);
         }
+        setDogList(dogList.filter(item => !selectedDogs.includes(item)));
+        setSelectedDogs([]);
     }
 
     return (
