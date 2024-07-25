@@ -3,6 +3,7 @@ import { StyleSheet, View, Button } from "react-native";
 import { Link } from "expo-router";
 import { useEffect } from "react";
 
+
 export default function game({ }) {
     const top = useSharedValue(0);
     const rotation = useSharedValue(0);
@@ -13,8 +14,10 @@ export default function game({ }) {
 
         left: left.value + '%',//fait qu'il sera deplacé sur les cotés
 
-        transform: [{ rotate: rotation.value + 'deg' }]//fait pour la rotation
+        transform: [{ 
+            rotate: rotation.value + 'deg' }]//fait pour la rotation
     }));
+
 
     useEffect(() => {
         // Animation de la rotation
@@ -36,6 +39,7 @@ export default function game({ }) {
         );
     }, []);
 
+
     return (
         <View style={styles.container}>
             <Link href="/" style={styles.link}>Home</Link>
@@ -48,6 +52,7 @@ export default function game({ }) {
         </View>
     );
 }
+
 
 const styles = StyleSheet.create({
     container: {
