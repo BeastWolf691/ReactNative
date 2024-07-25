@@ -6,7 +6,7 @@ import axios from "axios";
 export default function DataDog() {
     const [dogPosition, setDogPosition] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-    const [page, setPage] = useState(1);
+    const [page, setPage] = useState(4);
     const [showFloating, setShowFloating] = useState(false);
     const list = useRef();
     const [selectedDogs, setSelectedDogs] = useState([]);
@@ -17,7 +17,8 @@ export default function DataDog() {
             try {
                 const response = await axios.get("https://bunny-relaxing-quickly.ngrok-free.app/api/dog", {
                     headers: {
-                        'ngrok-skip-browser-warning': 'true' // nécessaire seulement car hébergeur du serveur
+                        'ngrok-skip-browser-warning': 'true'
+                        // nécessaire seulement car hébergeur du serveur
                     },
                     params: { page }
                 });
@@ -37,7 +38,7 @@ export default function DataDog() {
             onLongPress={() => select(item)}
             onPress={() => selectedDogs.length > 0 && select(item)}>
             {/*cette modification permet d'affecter des couleurs selon la selection des chiens avec onLongPress */}
-            <View style={{...styles.dogItem, backgroundColor: selectedDogs.includes(item)? "#ccc":"#fff"}}>
+            <View style={{ ...styles.dogItem, backgroundColor: selectedDogs.includes(item) ? "#ccc" : "#fff" }}>
                 <Text style={styles.dogText}>ID: {item.id}, Name: {item.name}, Breed: {item.breed}</Text>
                 <Text style={styles.dogBirth}>Birthdate: {item.birthdate}</Text>
             </View>
@@ -61,6 +62,22 @@ export default function DataDog() {
         }
     }
 
+    async function deleteSelected() {//ce code permet lors d'une selection de pouvoir ensuite supprimer
+        try {
+            for (const dog of selectedDogs) {
+                await axios.delete(`https://bunny-relaxing-quickly.ngrok-free.app/api/dog/${dog.id}`, {
+                    headers: {
+                        'ngrok-skip-browser-warning': 'true'
+                    }
+                });
+            }
+            setDogPosition(dogPosition.filter(dog => !selectedDogs.includes(dog)));
+            setSelectedDogs([]);
+        } catch (error) {
+            console.error("Erreur lors de la suppression des données : ", error);
+        }
+    }
+
     return (
         <View style={styles.container}>
             <Link href="/" style={styles.link}>Home</Link>
@@ -68,6 +85,11 @@ export default function DataDog() {
             {showFloating &&
                 <Pressable onPress={() => list.current.scrollToIndex({ index: 0 })} style={styles.floatingButton}>{/*besoin de renseigner l'objet avec un argument index*/}
                     <Text>↑</Text>
+                </Pressable>
+            }
+            {selectedDogs.length > 0 &&//cet effet de bouton prend en compte le deleteselected que nous avons fait en fonction plus haut
+                <Pressable onPress={deleteSelected} style={styles.deleteButton}>
+                    <Text style={styles.deleteButtonText}>X</Text>
                 </Pressable>
             }
             {dogPosition.length > 0 ? (
@@ -141,5 +163,29 @@ const styles = StyleSheet.create({
         right: 10,
         width: 25,
         zIndex: 1
+    },
+    deleteButton: {
+        position: 'absolute',
+        top: 50,
+        right: 25,
+        padding: 10,
+        backgroundColor: '#FB4D4D',
+        borderRadius: 50,
+        width:50
+    },
+    deleteButtonText: {
+        color: 'white',
+        fontSize: 16,
+        fontWeight: 'bold',
+        marginStart: 10
+        
     }
 });
+
+/**CRUD SUR API REST
+ * get /api/dog
+ * get /api/dog/:id
+ * post /api/dog
+ * delete /api/dog/:id
+ * patch/put /api/dog/:id > attend un dog ou un fragment de dog pour un patch dans son 
+ */
