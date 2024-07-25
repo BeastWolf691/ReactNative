@@ -1,61 +1,52 @@
-import Animated, { useAnimatedStyle, useSharedValue, withRepeat, withTiming,  Easing} from "react-native-reanimated";
+import Animated, { useAnimatedStyle, useSharedValue, withRepeat, withTiming, Easing } from "react-native-reanimated";
 import { StyleSheet, View, Button } from "react-native";
 import { Link } from "expo-router";
 import { useEffect } from "react";
 
-
-const duration = 2000;
 export default function game({ }) {
-    let width = 250;//pensez a définir la taille de l'écran
-    // const defaultAnim = useSharedValue(width / 2 - 160);animation effet rebondi
-    const linear = useSharedValue(width / 2 - 160);
-    const positionY = useSharedValue(0);
+    const top = useSharedValue(0);
+    const rotation = useSharedValue(0);
+    const left = useSharedValue(0);
 
     const animatedDefault = useAnimatedStyle(() => ({
-        transform: [{translateY: positionY.value}],
-      }));
+        top: top.value + '%',//fait qu'il part du haut
 
-    const animatedChanged = useAnimatedStyle(() => ({
-        transform: [{translateY: positionY.value}],
+        left: left.value + '%',//fait qu'il sera deplacé sur les cotés
+        
+        transform: [{ rotate: rotation.value + 'deg' }]//fait pour la rotation
     }));
 
-
     useEffect(() => {
-        linear.value = withRepeat(
-            withTiming( {
-                duration,
+        // Animation de la rotation
+        rotation.value = withRepeat(
+            withTiming(200, { duration: 3000, easing: Easing.linear }),
+            -1
+        );
+
+        // Animation du déplacement vertical et mise à jour de la position left
+        top.value = withRepeat(
+            withTiming(100, {
+                duration: 3000,
                 easing: Easing.linear,
+            }, () => {
+                // Callback qui change la valeur de left
+                left.value = Math.random() * 80;
             }),
-            -1,
-            true
-        );//permet de definir l'effet rebondi
-        // defaultAnim.value = withRepeat(
-        //     withTiming(-defaultAnim.value, {
-        //         duration,
-        //     }),
-        //     -1,
-        //     true
-        // );
+            -1
+        );
     }, []);
 
     return (
         <View style={styles.container}>
             <Link href="/" style={styles.link}>Home</Link>
-            <Button title="Animate !"
-                onPress={() => {
-                    positionY.value = withTiming(positionY.value + 100, {
-                        duration,
-                        easing: Easing.linear,
-                    });
-                }}
-                 />
+
             <Animated.Image
                 source={require('../assets/asteroide.jpg')}
-                style={[styles.image, animatedDefault]}
+                //chemin pour affecter une image ou meme un lien
+                style={[animatedDefault]}
             />
-
         </View>
-    )
+    );
 }
 
 const styles = StyleSheet.create({
@@ -83,10 +74,10 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         alignItems: 'center',
         justifyContent: 'center',
-      },
-      text: {
+    },
+    text: {
         color: '#b58df1',
         textTransform: 'uppercase',
         fontWeight: 'bold',
-      },
-})
+    },
+});
