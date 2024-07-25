@@ -87,7 +87,8 @@ export default function DataDog() {
                     <Text>↑</Text>
                 </Pressable>
             }
-            {selectedDogs.length > 0 &&//cet effet de bouton prend en compte le deleteselected que nous avons fait en fonction plus haut
+            {selectedDogs.length > 0 &&
+            //cet effet de bouton prend en compte le deleteselected que nous avons fait en fonction plus haut
                 <Pressable onPress={deleteSelected} style={styles.deleteButton}>
                     <Text style={styles.deleteButtonText}>X</Text>
                 </Pressable>
@@ -153,7 +154,7 @@ const styles = StyleSheet.create({
         color: 'white',
     },
     floatingButton: {
-        padding: 20,
+        padding: 10,
         borderRadius: 100,
         backgroundColor: 'skyblue',
         fontSize: 20,
