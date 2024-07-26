@@ -7,29 +7,34 @@ export default function HomeScreen() {
   return (
     <View>
       <Text style={styles.txt}>Bienvenu sur notre site</Text>
-      <Link href="/todo" asChild style={{padding:10, backgroundColor:'lightgray', width:125}}>
+      <Link href="/todo" asChild style={{ padding: 10, backgroundColor: 'lightgray', width: 125 }}>
         <Pressable>
           <Text>Todo</Text>
         </Pressable>
       </Link>
-      <Link href="/gesture" asChild style={{padding:10, backgroundColor:'lightgray', width:125}}>
+      <Link href="/gesture" asChild style={{ padding: 10, backgroundColor: 'lightgray', width: 125 }}>
         <Pressable>
           <Text>Gesture</Text>
         </Pressable>
       </Link>
-      <Link href="/data-dog" asChild style={{padding:10, backgroundColor:'lightgray', width:125}}>
+      <Link href="/data-dog" asChild style={{ padding: 10, backgroundColor: 'lightgray', width: 125 }}>
         <Pressable>
           <Text>data-dog</Text>
         </Pressable>
       </Link>
-      <Link href="/animation" asChild style={{padding:10, backgroundColor:'lightgray', width:125}}>
+      <Link href="/animation" asChild style={{ padding: 10, backgroundColor: 'lightgray', width: 125 }}>
         <Pressable>
           <Text>animation</Text>
         </Pressable>
       </Link>
-      <Link href="/game" asChild style={{padding:10, backgroundColor:'lightgray', width:125}}>
+      <Link href="/game" asChild style={{ padding: 10, backgroundColor: 'lightgray', width: 125 }}>
         <Pressable>
           <Text>game</Text>
+        </Pressable>
+      </Link>
+      <Link href="/camera" asChild style={{ padding: 10, backgroundColor: 'lightgray', width: 125 }}>
+        <Pressable>
+          <Text>camera</Text>
         </Pressable>
       </Link>
       <StatusBar style="auto" />
