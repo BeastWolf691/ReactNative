@@ -14,8 +14,9 @@ export default function game({ }) {
 
         left: left.value + '%',//fait qu'il sera deplacé sur les cotés
 
-        transform: [{ 
-            rotate: rotation.value + 'deg' }]//fait pour la rotation
+        transform: [{
+            rotate: rotation.value + 'deg'
+        }]//fait pour la rotation
     }));
 
 
@@ -46,6 +47,11 @@ export default function game({ }) {
 
             <Animated.Image
                 source={require('../assets/asteroide.jpg')}
+                //chemin pour affecter une image ou meme un lien
+                style={[animatedDefault]}
+            />
+            <Animated.Image
+                source={require('../assets/vaisseauSTUSS.jpg')}
                 //chemin pour affecter une image ou meme un lien
                 style={[animatedDefault]}
             />
